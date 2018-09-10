@@ -1,0 +1,65 @@
+#+TITLE: org-html-theme-darksun
+#+PROPERTY: LOGGING nil
+
+#+HTML: <a href=https://alphapapa.github.io/dont-tread-on-emacs/><img src="images/dont-tread-on-emacs-150.png" align="right"></a>
+
+An Org HTML export theme based on [[https://github.com/fniessen/org-html-themes][Bigblow]] and [[https://ethanschoonover.com/solarized/][Solarized]] [[https://github.com/bbatsov/solarized-emacs][Dark]].  Primarily the colors are changed, but there are also minor improvements to the layout and JavaScript.
+
+* Screenshots
+:PROPERTIES:
+:TOC:      ignore
+:END:
+
+[[http://alphapapa.github.io/emacs-package-dev-handbook][file:images/screenshots/emacs-package-dev-handbook.png]]
+
+* Contents                                                         :noexport:
+:PROPERTIES:
+:TOC:      this
+:END:
+  -  [[#usage][Usage]]
+  -  [[#changelog][Changelog]]
+  -  [[#credits][Credits]]
+  -  [[#development][Development]]
+
+* Usage
+:PROPERTIES:
+:TOC:      0
+:END:
+
+Copy the =export= directory to the directory where your Org file is, and add this setting line to the Org file:
+
+#+BEGIN_SRC org
+  #+SETUPFILE: export/setup/theme-bigblow-local.setup
+#+END_SRC
+
+* Changelog
+:PROPERTIES:
+:TOC:      0
+:END:
+
+** 0.1
+
+Initial release.
+
+* Credits
+
+This is based on the Bigblow theme from Fabrice Niessen's [[https://github.com/fniessen/org-html-themes][org-html-themes]] repo.  Be sure to visit his repo to see his other themes.
+
+* Development
+
+Bug reports, feature requests, suggestions — /oh my/!
+
+* License
+:PROPERTIES:
+:TOC:      ignore
+:END:
+
+GPLv3
+
+# Local Variables:
+# eval: (require 'org-make-toc)
+# before-save-hook: org-make-toc
+# org-export-with-properties: ()
+# org-export-with-title: t
+# End:
+
