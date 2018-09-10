@@ -29,7 +29,7 @@ An Org HTML export theme based on [[https://github.com/fniessen/org-html-themes]
 Copy the =export= directory to the directory where your Org file is, and add this setting line to the Org file:
 
 #+BEGIN_SRC org
-  #+SETUPFILE: export/setup/theme-bigblow-local.setup
+  #+SETUPFILE: export/setup/theme-darksun-local.setup
 #+END_SRC
 
 * Changelog
