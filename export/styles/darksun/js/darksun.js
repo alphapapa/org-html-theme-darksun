@@ -43,25 +43,61 @@ $(function() {
     $('<div id="minitoc" class="dontprint"></div>').prependTo('body');
 });
 
-// generate contents of minitoc
+
+function outline_toc (min, max, i, root) {
+    // Return table of contents as a string for heading levels MIN through MAX, starting at ROOT.
+    // I is an index, allowing the function to be passed to $.map().
+
+    var heading_class = ".outline-" + min;
+    var headings = $(root).find(heading_class);
+    var tocs = headings.map(heading_toc.bind(null, min, max));
+
+    return "<ul>"
+        + tocs.toArray().join("\n")
+        + "</ul>";
+}
+
+function heading_toc (min, max, i, root) {
+    // Return ToC as string for heading elements at levels MIN through
+    // MAX inclusive, starting at ROOT.  I is an index, allowing the
+    // function to be passed to $.map().
+
+    if (min > max) {
+        return "";
+    }
+
+    var heading_tag = "h" + min;
+    var heading = $(root).find(heading_tag);
+
+    var pos = heading.text().search(/ | ►/);
+    if (pos > 0) {
+        var text = heading.text().substring(0, pos);
+    }
+    else {
+        var text = heading.text();
+    }
+
+    return "<li><a href='#" + $(root).attr("id") + "'>" + text + "</a>"
+        + "<ul>" + outline_toc(min + 1, max, null, root) + "</ul>"
+        + "</li>";
+}
+
 function generateMiniToc(divId) {
-    $('#minitoc-content').empty().append('<h2>In this section</h2><ul></ul>');
-    $('#' + divId).find('h3').each(function(i) {
-        // [2018-09-03 Mon 03:48] Get text up to non-breaking space,
-        // to omit the tags.  If there are no tags, there will be no
-        // &nbsp;, so get all the text.  (This fixes a bug in the
-        // original code.)
-        let text = null;
-        let pos = $(this).text().search(/ | ►/);
-        if (pos > 0) {
-            text = $(this).text().substring(0, pos);
-        }
-        else {
-            text = $(this).text();
-        }
-        $("#minitoc-content>ul").append("<li><a href='#" + $(this).attr("id") + "'>"
-                                        + text + "</a></li>");
-    });
+    $('#minitoc-content').empty().append('<h2>In this section</h2>');
+
+    // Add "Collapse" and "Expand" buttons.  Also done in hideshow.js in hsInit().
+    $('#minitoc-content h2').append($('<span>' + HS_SHOW_ALL_TEXT + '</span>')
+                                    .addClass('hsButton')
+                                    .click(hsExpandAll));
+    $('#minitoc-content h2').append($('<span>' + HS_HIDE_ALL_TEXT + '</span>')
+                                    .addClass('hsButton')
+                                    .click(hsCollapseAll));
+
+    // Add table of contents.
+    // divId is .outline-2, so add headings at levels 3-8 below it.
+    // TODO: Find a way to set the max (here, 8) in the HTML document.
+    $('#minitoc-content').append(outline_toc(3, 8, null, $('#' + divId)));
+
     // Ensure that the target is expanded (hideShow)
     $('#minitoc-content a[href^="#"]').click(function() {
         var href = $(this).attr('href');
