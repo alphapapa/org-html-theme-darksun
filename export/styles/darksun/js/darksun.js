@@ -21,12 +21,12 @@ $(function() {
         html(function(index, old) {
             return old.replace('FIXME',
                                '<span class="fixme">FIXME</span>');
-    });
+        });
     $('p').
         html(function(index, old) {
             return old.replace('XXX',
                                '<span class="fixme">XXX</span>');
-    });
+        });
 });
 
 // Remove leading section number
@@ -83,6 +83,8 @@ function heading_toc (min, max, i, root) {
 }
 
 function generateMiniToc(divId) {
+
+
     $('#minitoc-content').empty().append('<h2>In this section</h2>');
 
     // Add "Collapse" and "Expand" buttons.  Also done in hideshow.js in hsInit().
@@ -95,11 +97,17 @@ function generateMiniToc(divId) {
 
     // Add table of contents.
     // divId is .outline-2, so add headings at levels 3-8 below it.
-    // TODO: Find a way to set the max (here, 8) in the HTML document.
-    $('#minitoc-content').append(outline_toc(3, 8, null, $('#' + divId)));
+
+    // NOTE: Escape *this* *specific* *character*, here and now, not before it gets to
+    // this function, not after.  See <https://github.com/jquery/jquery/issues/2824>.  I
+    // tried to escape both "#" and "%" in a single function, which would make sense,
+    // but that did not work; jQuery would not accept it for some mysterious reason.  I
+    // only got this to work by pure luck.
+    divId = divId.replace(/%/g, "\\%");
+    $('\#minitoc-content').append(outline_toc(3, 3, null, $('#' + divId)));
 
     // Ensure that the target is expanded (hideShow)
-    $('#minitoc-content a[href^="#"]').click(function() {
+    $('#minitoc-content a[href^=\\#]').click(function() {
         var href = $(this).attr('href');
         hsExpandAnchor(href);
     });
@@ -214,8 +222,10 @@ $(document).ready(function() {
 
     // Handle hash in URL
     if ($('#content') && document.location.hash) {
-        hsExpandAnchor(document.location.hash);
-        selectTabAndScroll(document.location.hash);
+        let hash = document.location.hash;
+        hash = hash.replace(/%/g, "\\%");
+        hsExpandAnchor(hash);
+        selectTabAndScroll(hash);
     }
     // If no hash, build the minitoc anyway for selected tab
     else {
@@ -289,17 +299,17 @@ $(document).ready(function() {
 $(function() {
     $('li > code :contains("[X]")')
         .parent()
-            .addClass('checked')
+        .addClass('checked')
         .end()
         .remove();
     $('li > code :contains("[-]")')
         .parent()
-            .addClass('halfchecked')
+        .addClass('halfchecked')
         .end()
         .remove();
     $('li > code :contains("[ ]")')
         .parent()
-            .addClass('unchecked')
+        .addClass('unchecked')
         .end()
         .remove();
 });
@@ -363,17 +373,17 @@ $(function() {
 
     function scoreTodo(t) {
         switch (t) {
-            case 'NEW': return 1;
-            case 'TODO': return 2;
-            case 'STRT': return 3;
-            case 'WAIT': return 4;
-            case 'DLGT': return 5;
-            case 'SDAY': return 6;
-            case 'DFRD': return 7;
-            case 'DONE': return 8;
-            case 'CANX': return 9;
-            default: return 0;
-            }
+        case 'NEW': return 1;
+        case 'TODO': return 2;
+        case 'STRT': return 3;
+        case 'WAIT': return 4;
+        case 'DLGT': return 5;
+        case 'SDAY': return 6;
+        case 'DFRD': return 7;
+        case 'DONE': return 8;
+        case 'CANX': return 9;
+        default: return 0;
+        }
     }
 
     function compareTodo(a, b) {
@@ -430,7 +440,7 @@ $(function() {
     // assign the counts (avoid double-counting elements from the ToC)
     $('span.tag').not($('#table-of-contents span.tag')).each(function() {
         var $thisTagGroup = $(this).text().trim().split(/\s/);
-                                        // \s matches spaces, tabs, new lines, etc.
+        // \s matches spaces, tabs, new lines, etc.
 
         for (tag in $thisTagGroup) {
             if ($.inArray($thisTagGroup[tag], listOfTags) == -1) {
@@ -517,43 +527,43 @@ function orgDefkey(e) {
     var keycode = (e.keyCode) ? e.keyCode : e.which;
     var actualkey = String.fromCharCode(keycode);
     switch (actualkey) {
-        case "?": // help (dashboard)
-        case "h":
-            togglePanel(e);
-            break;
-        case "n": // next
-            clickNextTab();
-            break;
-        case "p": // previous
-            clickPreviousTab();
-            break;
+    case "?": // help (dashboard)
+    case "h":
+        togglePanel(e);
+        break;
+    case "n": // next
+        clickNextTab();
+        break;
+    case "p": // previous
+        clickPreviousTab();
+        break;
         // case "b": // scroll down - should be mapped to Shift-SPC
         //     $(window).scrollTop($(window).scrollTop()-$(window).height());
         //     break;
-        case "<": // scroll to top
-            $(window).scrollTop(0);
-            break;
-        case ">": // scroll to bottom
-            $(window).scrollTop($(document).height());
-            break;
-        case "-": // collapse all
-            hsCollapseAll();
-            break;
-        case "+": // expand all
-            hsExpandAll();
-            break;
-        case "r": // go to next task
-            hsReviewTaskNext();
-            break;
-        case "R": // go to previous task
-            hsReviewTaskPrev();
-            break;
-        case "q": // quit reviewing
-            hsReviewTaskQuit();
-            break;
-        case "g": // refresh the page (from the server, rather than the cache)
-            location.reload(true);
-            break;
+    case "<": // scroll to top
+        $(window).scrollTop(0);
+        break;
+    case ">": // scroll to bottom
+        $(window).scrollTop($(document).height());
+        break;
+    case "-": // collapse all
+        hsCollapseAll();
+        break;
+    case "+": // expand all
+        hsExpandAll();
+        break;
+    case "r": // go to next task
+        hsReviewTaskNext();
+        break;
+    case "R": // go to previous task
+        hsReviewTaskPrev();
+        break;
+    case "q": // quit reviewing
+        hsReviewTaskQuit();
+        break;
+    case "g": // refresh the page (from the server, rather than the cache)
+        location.reload(true);
+        break;
     }
 }
 

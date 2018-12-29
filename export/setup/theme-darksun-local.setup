@@ -4,7 +4,7 @@
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="export/styles/darksun/css/darksun.css"/>
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="export/styles/darksun/css/hideshow.css"/>
 
-#+HTML_HEAD: <script type="text/javascript" src="export/styles/darksun/js/jquery-1.11.0.min.js"></script>
+#+HTML_HEAD: <script type="text/javascript" src="export/styles/darksun/js/jquery-1.11.3.min.js"></script>
 #+HTML_HEAD: <script type="text/javascript" src="export/styles/darksun/js/jquery-ui-1.10.2.min.js"></script>
 
 #+HTML_HEAD: <script type="text/javascript" src="export/styles/darksun/js/jquery.localscroll-min.js"></script>
