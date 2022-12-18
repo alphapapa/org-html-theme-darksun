@@ -1,8 +1,6 @@
 #+TITLE: org-html-theme-darksun
 #+PROPERTY: LOGGING nil
 
-#+HTML: <a href=https://alphapapa.github.io/dont-tread-on-emacs/><img src="images/dont-tread-on-emacs-150.png" align="right"></a>
-
 An Org HTML export theme based on [[https://github.com/fniessen/org-html-themes][Bigblow]] and [[https://ethanschoonover.com/solarized/][Solarized]] [[https://github.com/bbatsov/solarized-emacs][Dark]].  Primarily the colors are changed, but there are also minor changes to the layout, styles, and JavaScript.
 
 * Screenshots
